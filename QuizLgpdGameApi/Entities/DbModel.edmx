@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="gamequizlgpdModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="NiveisDificuldades">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Dificuldade" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Pontos" Type="int" Nullable="false" />
+          <Property Name="Dano" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Questoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NiveisDificuldadesId" Type="int" Nullable="false" />
+          <Property Name="Questao" Type="nvarchar" MaxLength="400" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RepostasUsuarios">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuestaoId" Type="int" Nullable="false" />
+          <Property Name="RespostaId" Type="int" Nullable="false" />
+          <Property Name="UsuarioId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Respostas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuestaoId" Type="int" Nullable="false" />
+          <Property Name="Resposta" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="RespostaCorreta" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Vida" Type="int" />
+          <Property Name="Pontos" Type="int" />
+        </EntityType>
+        <Association Name="fk_questoes_niveisdificuldadesId">
+          <End Role="NiveisDificuldades" Type="Self.NiveisDificuldades" Multiplicity="1" />
+          <End Role="Questoes" Type="Self.Questoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NiveisDificuldades">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Questoes">
+              <PropertyRef Name="NiveisDificuldadesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_repostasusuarios_questoes">
+          <End Role="Questoes" Type="Self.Questoes" Multiplicity="1" />
+          <End Role="RepostasUsuarios" Type="Self.RepostasUsuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RepostasUsuarios">
+              <PropertyRef Name="QuestaoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_repostasusuarios_respostas">
+          <End Role="Respostas" Type="Self.Respostas" Multiplicity="1" />
+          <End Role="RepostasUsuarios" Type="Self.RepostasUsuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Respostas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RepostasUsuarios">
+              <PropertyRef Name="RespostaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_repostasusuarios_usuarios">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="RepostasUsuarios" Type="Self.RepostasUsuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RepostasUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_respostas_questoes">
+          <End Role="Questoes" Type="Self.Questoes" Multiplicity="1" />
+          <End Role="Respostas" Type="Self.Respostas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Respostas">
+              <PropertyRef Name="QuestaoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="gamequizlgpdModelStoreContainer">
+          <EntitySet Name="NiveisDificuldades" EntityType="Self.NiveisDificuldades" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Questoes" EntityType="Self.Questoes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RepostasUsuarios" EntityType="Self.RepostasUsuarios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Respostas" EntityType="Self.Respostas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_questoes_niveisdificuldadesId" Association="Self.fk_questoes_niveisdificuldadesId">
+            <End Role="NiveisDificuldades" EntitySet="NiveisDificuldades" />
+            <End Role="Questoes" EntitySet="Questoes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_repostasusuarios_questoes" Association="Self.fk_repostasusuarios_questoes">
+            <End Role="Questoes" EntitySet="Questoes" />
+            <End Role="RepostasUsuarios" EntitySet="RepostasUsuarios" />
+          </AssociationSet>
+          <AssociationSet Name="fk_repostasusuarios_respostas" Association="Self.fk_repostasusuarios_respostas">
+            <End Role="Respostas" EntitySet="Respostas" />
+            <End Role="RepostasUsuarios" EntitySet="RepostasUsuarios" />
+          </AssociationSet>
+          <AssociationSet Name="fk_repostasusuarios_usuarios" Association="Self.fk_repostasusuarios_usuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="RepostasUsuarios" EntitySet="RepostasUsuarios" />
+          </AssociationSet>
+          <AssociationSet Name="fk_respostas_questoes" Association="Self.fk_respostas_questoes">
+            <End Role="Questoes" EntitySet="Questoes" />
+            <End Role="Respostas" EntitySet="Respostas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="gamequizlgpdModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="NiveisDificuldades">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Dificuldade" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pontos" Type="Int32" Nullable="false" />
+          <Property Name="Dano" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Questoes" Relationship="Self.fk_questoes_niveisdificuldadesId" FromRole="NiveisDificuldades" ToRole="Questoes" />
+        </EntityType>
+        <EntityType Name="Questoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NiveisDificuldadesId" Type="Int32" Nullable="false" />
+          <Property Name="Questao" Type="String" MaxLength="400" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="NiveisDificuldades" Relationship="Self.fk_questoes_niveisdificuldadesId" FromRole="Questoes" ToRole="NiveisDificuldades" />
+          <NavigationProperty Name="RepostasUsuarios" Relationship="Self.fk_repostasusuarios_questoes" FromRole="Questoes" ToRole="RepostasUsuarios" />
+          <NavigationProperty Name="Respostas" Relationship="Self.fk_respostas_questoes" FromRole="Questoes" ToRole="Respostas" />
+        </EntityType>
+        <EntityType Name="RepostasUsuarios">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuestaoId" Type="Int32" Nullable="false" />
+          <Property Name="RespostaId" Type="Int32" Nullable="false" />
+          <Property Name="UsuarioId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Questoes" Relationship="Self.fk_repostasusuarios_questoes" FromRole="RepostasUsuarios" ToRole="Questoes" />
+          <NavigationProperty Name="Respostas" Relationship="Self.fk_repostasusuarios_respostas" FromRole="RepostasUsuarios" ToRole="Respostas" />
+          <NavigationProperty Name="Usuarios" Relationship="Self.fk_repostasusuarios_usuarios" FromRole="RepostasUsuarios" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="Respostas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuestaoId" Type="Int32" Nullable="false" />
+          <Property Name="Resposta" Type="String" MaxLength="400" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RespostaCorreta" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Questoes" Relationship="Self.fk_respostas_questoes" FromRole="Respostas" ToRole="Questoes" />
+          <NavigationProperty Name="RepostasUsuarios" Relationship="Self.fk_repostasusuarios_respostas" FromRole="Respostas" ToRole="RepostasUsuarios" />
+        </EntityType>
+        <EntityType Name="Usuarios">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Vida" Type="Int32" />
+          <Property Name="Pontos" Type="Int32" />
+          <NavigationProperty Name="RepostasUsuarios" Relationship="Self.fk_repostasusuarios_usuarios" FromRole="Usuarios" ToRole="RepostasUsuarios" />
+        </EntityType>
+        <Association Name="fk_questoes_niveisdificuldadesId">
+          <End Role="NiveisDificuldades" Type="Self.NiveisDificuldades" Multiplicity="1" />
+          <End Role="Questoes" Type="Self.Questoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NiveisDificuldades">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Questoes">
+              <PropertyRef Name="NiveisDificuldadesId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_repostasusuarios_questoes">
+          <End Role="Questoes" Type="Self.Questoes" Multiplicity="1" />
+          <End Role="RepostasUsuarios" Type="Self.RepostasUsuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RepostasUsuarios">
+              <PropertyRef Name="QuestaoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_respostas_questoes">
+          <End Role="Questoes" Type="Self.Questoes" Multiplicity="1" />
+          <End Role="Respostas" Type="Self.Respostas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Respostas">
+              <PropertyRef Name="QuestaoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_repostasusuarios_respostas">
+          <End Role="Respostas" Type="Self.Respostas" Multiplicity="1" />
+          <End Role="RepostasUsuarios" Type="Self.RepostasUsuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Respostas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RepostasUsuarios">
+              <PropertyRef Name="RespostaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_repostasusuarios_usuarios">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="1" />
+          <End Role="RepostasUsuarios" Type="Self.RepostasUsuarios" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RepostasUsuarios">
+              <PropertyRef Name="UsuarioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="gamequizlgpdEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="NiveisDificuldades" EntityType="Self.NiveisDificuldades" />
+          <EntitySet Name="Questoes" EntityType="Self.Questoes" />
+          <EntitySet Name="RepostasUsuarios" EntityType="Self.RepostasUsuarios" />
+          <EntitySet Name="Respostas" EntityType="Self.Respostas" />
+          <EntitySet Name="Usuarios" EntityType="Self.Usuarios" />
+          <AssociationSet Name="fk_questoes_niveisdificuldadesId" Association="Self.fk_questoes_niveisdificuldadesId">
+            <End Role="NiveisDificuldades" EntitySet="NiveisDificuldades" />
+            <End Role="Questoes" EntitySet="Questoes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_repostasusuarios_questoes" Association="Self.fk_repostasusuarios_questoes">
+            <End Role="Questoes" EntitySet="Questoes" />
+            <End Role="RepostasUsuarios" EntitySet="RepostasUsuarios" />
+          </AssociationSet>
+          <AssociationSet Name="fk_respostas_questoes" Association="Self.fk_respostas_questoes">
+            <End Role="Questoes" EntitySet="Questoes" />
+            <End Role="Respostas" EntitySet="Respostas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_repostasusuarios_respostas" Association="Self.fk_repostasusuarios_respostas">
+            <End Role="Respostas" EntitySet="Respostas" />
+            <End Role="RepostasUsuarios" EntitySet="RepostasUsuarios" />
+          </AssociationSet>
+          <AssociationSet Name="fk_repostasusuarios_usuarios" Association="Self.fk_repostasusuarios_usuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="RepostasUsuarios" EntitySet="RepostasUsuarios" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="gamequizlgpdModelStoreContainer" CdmEntityContainer="gamequizlgpdEntities">
+          <EntitySetMapping Name="NiveisDificuldades">
+            <EntityTypeMapping TypeName="gamequizlgpdModel.NiveisDificuldades">
+              <MappingFragment StoreEntitySet="NiveisDificuldades">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Dificuldade" ColumnName="Dificuldade" />
+                <ScalarProperty Name="Pontos" ColumnName="Pontos" />
+                <ScalarProperty Name="Dano" ColumnName="Dano" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questoes">
+            <EntityTypeMapping TypeName="gamequizlgpdModel.Questoes">
+              <MappingFragment StoreEntitySet="Questoes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NiveisDificuldadesId" ColumnName="NiveisDificuldadesId" />
+                <ScalarProperty Name="Questao" ColumnName="Questao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RepostasUsuarios">
+            <EntityTypeMapping TypeName="gamequizlgpdModel.RepostasUsuarios">
+              <MappingFragment StoreEntitySet="RepostasUsuarios">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="QuestaoId" ColumnName="QuestaoId" />
+                <ScalarProperty Name="RespostaId" ColumnName="RespostaId" />
+                <ScalarProperty Name="UsuarioId" ColumnName="UsuarioId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Respostas">
+            <EntityTypeMapping TypeName="gamequizlgpdModel.Respostas">
+              <MappingFragment StoreEntitySet="Respostas">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="QuestaoId" ColumnName="QuestaoId" />
+                <ScalarProperty Name="Resposta" ColumnName="Resposta" />
+                <ScalarProperty Name="RespostaCorreta" ColumnName="RespostaCorreta" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuarios">
+            <EntityTypeMapping TypeName="gamequizlgpdModel.Usuarios">
+              <MappingFragment StoreEntitySet="Usuarios">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Vida" ColumnName="Vida" />
+                <ScalarProperty Name="Pontos" ColumnName="Pontos" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
